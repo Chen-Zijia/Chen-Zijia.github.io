@@ -331,6 +331,22 @@
       transition: opacity .4s ease, inset .4s ease;
     }
     .photo-frame:hover::before { opacity: .8; }
+
+    /* 愚人节限定：照片倒置，悬停可"扶正"（182° -> 360°） */
+    .photo-frame.fools-flip { transform: rotate(182deg); }
+    .photo-frame.fools-flip:hover { transform: rotate(360deg); }
+    /* 愚人节字幕：照片被悬停"扶正"后浮现 */
+    .fools-caption {
+      display: none;
+      margin-top: .7rem;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: .74rem;
+      letter-spacing: .08em;
+      color: #0f8a43;
+    }
+    .fools-caption.fools-on { display: block; opacity: 0; transition: opacity .35s ease .1s; }
+    .photo-frame.fools-flip:hover ~ .fools-caption.fools-on { opacity: 1; }
     .photo-frame img {
       display: block; width: 100%;
       aspect-ratio: 2 / 3; object-fit: cover;
@@ -551,6 +567,25 @@
       justify-items: center;   /* 版权行与返回顶部各占一行，均居中 */
     }
     .footer-top { margin-top: 1rem; }  /* 返回顶部上方留一个空行（中英文相同） */
+    /* ---------------- 节日彩蛋（仅 index_eggs.html）：页脚祝福 + favicon ---------------- */
+    .festive-greet {
+      flex-basis: 100%;
+      text-align: center;
+      font-size: .78rem;
+      letter-spacing: .06em;
+      color: var(--accent);
+      display: none;
+    }
+    .festive-greet.on { display: block; }
+    .festive-greet-nav {
+      font-family: var(--font-mono);
+      font-size: .68rem;
+      letter-spacing: .04em;
+      color: var(--accent);
+      white-space: nowrap;
+      display: none;
+    }
+    .festive-greet-nav.on { display: inline; }
     footer a { color: var(--ink-soft); background: none; }
     footer a:hover { color: var(--accent); }
 
@@ -581,6 +616,9 @@
       html { scroll-behavior: auto; }
       .hero-grid > *, [data-reveal] { animation: none; opacity: 1; transform: none; transition: none; }
       .photo-frame { transform: none; }
+      /* 愚人节恶作剧整体关闭：照片正放、字幕永不出现 */
+      .photo-frame.fools-flip, .photo-frame.fools-flip:hover { transform: none; }
+      .fools-caption, .fools-caption.fools-on { display: none !important; }
     }
 
     @media print {
@@ -597,6 +635,7 @@
   <nav class="site-nav" aria-label="Main navigation">
     <div class="wrap">
       <a class="wordmark" href="#top">Zijia&nbsp;Chen</a>
+      <span class="festive-greet-nav"></span>
       <div class="nav-links">
         <a href="#bio" data-zh="简介">Bio</a>
         <a href="#education" data-zh="教育经历">Education</a>
@@ -655,6 +694,7 @@
           <!-- ✏️ 以后换照片：直接用新文件覆盖同目录下的 photo.jpg 即可 -->
           <img src="photo.jpg" alt="Zijia Chen 陈梓佳">
         </figure>
+        <div class="fools-caption" data-zh="🤡愚人节快乐！！">🤡 Happy April Fools' Day!!</div>
       </div>
     </div>
   </header>
@@ -782,6 +822,7 @@
   <footer>
     <div class="wrap">
       <span class="footer-addr" data-zh="清华大学 · 北京 · 100084">Tsinghua University, Beijing, China 100084</span>
+      <span class="festive-greet"></span>
       <div class="footer-bottom">
         <span class="footer-copy" data-zh="© 2026 陈梓佳 · 最后更新：2026 年 11 月">© 2026 Zijia Chen · Last updated: November 2026</span>
         <a class="footer-top" href="#top" data-zh="返回顶部 ↑">Back to top ↑</a>
@@ -815,6 +856,85 @@
         e.preventDefault();
         window.location.href = 'mailto:' + link.dataset.user + '@' + link.dataset.domain;
       });
+    })();
+
+    // ---------- 节日彩蛋：新年 + 春节 + π Day + 中秋，?egg= 参数可预览 ----------
+    (function () {
+      function pad(n) { return n < 10 ? '0' + n : '' + n; }
+      function key(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+      function hitSpan(d, spans) { // spans: [年,月,日,持续天数]
+        var k = key(d);
+        for (var i = 0; i < spans.length; i++) {
+          var w = spans[i];
+          for (var t = 0; t < w[3]; t++) {
+            if (key(new Date(w[0], w[1] - 1, w[2] + t)) === k) return true;
+          }
+        }
+        return false;
+      }
+      var FESTS = [
+        { id: 'spring',     // 春节：除夕 ~ 正月十五（农历表 2026-2050，起始日为除夕）
+          spans: [[2026, 2, 16, 16], [2027, 2, 5, 16], [2028, 1, 25, 16], [2029, 2, 12, 16], [2030, 2, 2, 16], [2031, 1, 22, 16], [2032, 2, 10, 16], [2033, 1, 30, 16], [2034, 2, 18, 16], [2035, 2, 7, 16], [2036, 1, 27, 16], [2037, 2, 14, 16], [2038, 2, 3, 16], [2039, 1, 23, 16], [2040, 2, 11, 16], [2041, 1, 31, 16], [2042, 1, 21, 16], [2043, 2, 9, 16], [2044, 1, 29, 16], [2045, 2, 16, 16], [2046, 2, 5, 16], [2047, 1, 25, 16], [2048, 2, 13, 16], [2049, 2, 1, 16], [2050, 1, 22, 16]],
+          color: '#d0342c',   // 固定红（不随主题）
+          en: '🏮 Happy Chinese New Year', zh: '🏮 新春快乐',
+          svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='#c8102e'/><text x='50' y='70' font-size='54' font-family='KaiTi,STKaiti,serif' fill='#fff' text-anchor='middle'>福</text></svg>" },
+        { id: 'midautumn',  // 中秋：农历八月十五前后各一天（农历表 2026-2050）
+          spans: [[2026, 9, 24, 3], [2027, 9, 14, 3], [2028, 10, 2, 3], [2029, 9, 21, 3], [2030, 9, 11, 3], [2031, 9, 30, 3], [2032, 9, 18, 3], [2033, 9, 7, 3], [2034, 9, 26, 3], [2035, 9, 15, 3], [2036, 10, 3, 3], [2037, 9, 23, 3], [2038, 9, 12, 3], [2039, 10, 1, 3], [2040, 9, 19, 3], [2041, 9, 9, 3], [2042, 9, 27, 3], [2043, 9, 16, 3], [2044, 10, 4, 3], [2045, 9, 24, 3], [2046, 9, 14, 3], [2047, 10, 3, 3], [2048, 9, 21, 3], [2049, 9, 10, 3], [2050, 9, 29, 3]],
+          color: '#f0c419',   // 明黄（不随主题）
+          en: '🥮 Happy Mid-Autumn Festival', zh: '🥮 中秋快乐',
+          svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='#2b3a67'/><circle cx='52' cy='48' r='24' fill='#f7e8b0'/><circle cx='44' cy='44' r='24' fill='#2b3a67'/></svg>" },
+        { id: 'pi',         // π Day：3/14 当天
+          test: function (d) { return d.getMonth() === 2 && d.getDate() === 14; },
+          en: '🥧 Happy Pi Day', zh: '🥧 圆周率日快乐',
+          svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='#660874'/><text x='50' y='72' font-size='62' font-family='Georgia,serif' fill='#fff' text-anchor='middle'>π</text></svg>" },
+        { id: 'tau',        // τ 日：6/28（τ = 2π；6 与 28 皆为完全数）
+          test: function (d) { return d.getMonth() === 5 && d.getDate() === 28; },
+          en: '⊙ Happy Tau Day', zh: '⊙ τ 日快乐',
+          svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='#660874'/><circle cx='50' cy='52' r='29' fill='none' stroke='#fff' stroke-width='7'/><line x1='50' y1='52' x2='50' y2='23' stroke='#fff' stroke-width='6' stroke-linecap='round'/><circle cx='50' cy='52' r='5' fill='#fff'/></svg>" },
+        { id: 'eday',       // e 日：2/7
+          test: function (d) { return d.getMonth() === 1 && d.getDate() === 7; },
+          en: '📈 Happy e Day', zh: '📈 e 日快乐',
+          svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='#660874'/><path d='M18,82 C36,80 50,70 58,52 C64,38 68,28 82,16' fill='none' stroke='#fff' stroke-width='7' stroke-linecap='round'/><circle cx='82' cy='16' r='5' fill='#fff'/></svg>" },
+        { id: 'statsday',   // 世界统计日：10/20，每五年一次（联合国）
+          spans: [[2030, 10, 20, 1], [2035, 10, 20, 1], [2040, 10, 20, 1], [2045, 10, 20, 1], [2050, 10, 20, 1]],
+          en: '📊 Happy World Statistics Day', zh: '📊 世界统计日快乐',
+          svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='#660874'/><rect x='28' y='52' width='12' height='22' fill='#fff'/><rect x='44' y='38' width='12' height='36' fill='#fff'/><rect x='60' y='26' width='12' height='48' fill='#fff'/></svg>" },
+        { id: 'fools',      // 愚人节：4/1 当天
+          test: function (d) { return d.getMonth() === 3 && d.getDate() === 1; },
+          color: '#0f8a43',   // 圣诞绿（不随主题）
+          flip: true,             // 愚人节限定：照片倒置，悬停扶正
+          en: '🤡 Happy April Fools’ Day', zh: '🤡 愚人节快乐',
+          svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='#0f8a43'/><text x='50' y='69' font-size='40' font-family='Consolas,monospace' fill='#fff' text-anchor='middle'>4.1</text></svg>" },
+        { id: 'newyear',    // 元旦/新年：12/30 ~ 次年 1/3
+          test: function (d) { var m = d.getMonth() + 1, day = d.getDate(); return (m === 12 && day >= 30) || (m === 1 && day <= 3); },
+          color: '#d0342c',   // 固定红（不随主题）
+          en: '🎆 Happy New Year', zh: '🎆 新年快乐',
+          svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='#660874'/><g stroke='#fff' stroke-width='5' stroke-linecap='round'><line x1='50' y1='50' x2='50' y2='24'/><line x1='50' y1='50' x2='70' y2='33'/><line x1='50' y1='50' x2='77' y2='54'/><line x1='50' y1='50' x2='65' y2='73'/><line x1='50' y1='50' x2='37' y2='75'/><line x1='50' y1='50' x2='24' y2='58'/><line x1='50' y1='50' x2='28' y2='36'/></g><circle cx='50' cy='50' r='6' fill='#fff'/><circle cx='50' cy='14' r='3' fill='#fff'/><circle cx='84' cy='44' r='3' fill='#fff'/><circle cx='74' cy='82' r='3' fill='#fff'/><circle cx='16' cy='72' r='3' fill='#fff'/><circle cx='14' cy='30' r='3' fill='#fff'/></svg>" }
+      ];
+      var forced = null;
+      try { forced = new URLSearchParams(location.search).get('egg'); } catch (e) {}
+      var fest = null;
+      for (var i = 0; i < FESTS.length; i++) {
+        if (forced === FESTS[i].id) { fest = FESTS[i]; break; }
+        if (!forced && (FESTS[i].test ? FESTS[i].test(new Date()) : hitSpan(new Date(), FESTS[i].spans))) { fest = FESTS[i]; break; }
+      }
+      if (!fest) return;
+      var slots = document.querySelectorAll('.festive-greet, .festive-greet-nav');
+      if (!slots.length) return;
+      Array.prototype.forEach.call(slots, function (el) {
+        el.textContent = fest.en;
+        el.dataset.zh = fest.zh;
+        el.classList.add('on');
+        if (fest.color) el.style.color = fest.color;   // 有固定色则覆盖主题点缀色
+      });
+      if (fest.flip) {
+        var frame = document.querySelector('.photo-frame');
+        var caption = document.querySelector('.fools-caption');
+        if (frame) frame.classList.add('fools-flip');
+        if (caption) caption.classList.add('fools-on');
+      }
+      var icon = document.querySelector('link[rel="icon"]');
+      if (icon) icon.href = 'data:image/svg+xml,' + encodeURIComponent(fest.svg);
     })();
 
     // ---------- 中英文切换 ----------
