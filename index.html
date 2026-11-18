@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zijia Chen 陈梓佳</title>
-  <meta name="description" content="Zijia Chen (陈梓佳) — Ph.D. student at the School of Economics and Management, Tsinghua University">
+  <meta name="description" content="Zijia Chen (陈梓佳), Ph.D. student at the School of Economics and Management, Tsinghua University. Research: causal inference, statistical machine learning, and data-driven decision making. 清华大学经济管理学院博士生，研究方向：因果推断、统计机器学习与数据驱动决策。">
   <meta name="google-site-verification" content="yPqCFNgPqtxeEwrDdY1h8KE6c2xV0qJSL_Q1wimg17k" />
+  <link rel="canonical" href="https://chen-zijia.github.io/">
 
   <!-- Open Graph：社交分享卡片 -->
   <meta property="og:type" content="profile">
@@ -61,8 +62,8 @@
     }
 
     [data-theme="dark"] {
-      --bg: #221f1a;             /* "假黑"：带暖调的深灰，比纯黑柔和耐看 */
-      --bg-soft: #2b2720;
+      --bg: #2a2620;             /* "假黑"再提亮一档：带暖调的深灰，柔和耐看 */
+      --bg-soft: #332e27;
       --ink: #ede8dc;
       --ink-soft: #a9a190;
       --accent: #ff4d00;         /* 南科大橙（CMYK C0 M70 Y100 K0 ≈ #FF4D00） */
@@ -100,6 +101,13 @@
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
     }
     [data-theme="dark"] body::before { opacity: .4; }
+
+    /* 页首随滚动渐隐上浮（进度由脚本写入 --hero-p，0→1） */
+    header.hero {
+      opacity: calc(1 - var(--hero-p, 0) * 0.9);
+      transform: translateY(calc(var(--hero-p, 0) * -40px));
+      will-change: opacity, transform;
+    }
 
     /* 期刊刊头式双线：粗紫线 + 细发丝线 */
     .masthead-rule {
@@ -167,6 +175,10 @@
       font-family: var(--font-mono);
       font-size: .78rem; letter-spacing: .04em;
     }
+    .nav-links a + a {
+      border-left: 1px solid var(--hairline);   /* "|" 分隔线 */
+      padding-left: 1.15rem;
+    }
     .nav-links a {
       color: var(--ink-soft);
       background: none;
@@ -176,7 +188,7 @@
     .nav-links a:hover { color: var(--accent); }
 
     .theme-toggle {
-      margin-left: .4rem;
+      margin-left: auto;   /* 导航链接停用后，由主题按钮承担推右职责 */
       width: 2rem; height: 2rem;
       display: grid; place-items: center;
       border: 1px solid var(--hairline);
@@ -194,8 +206,8 @@
     .lang-toggle {
       margin-left: .2rem;
       height: 2rem;
-      min-width: 2rem;
-      padding: 0 .55rem;
+      width: 2rem;     /* 与高度相等成圆形；定宽避免中/EN 切换时相邻按钮位移 */
+      padding: 0;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -205,7 +217,9 @@
       cursor: pointer;
       color: var(--ink-soft);
       font-family: var(--font-mono);
-      font-size: .74rem;
+      font-size: .78rem;
+      font-weight: 600;   /* 稍加粗，与全站加粗标注一致 */
+      line-height: 1;     /* 归一行高，让"中"/"EN"在胶囊里真正居中（CJK 字形基线偏移问题） */
       transition: color .2s, border-color .2s;
     }
     .lang-toggle:hover { color: var(--accent); border-color: var(--accent); }
@@ -341,7 +355,7 @@
       background: var(--bg);
       border: 1px solid var(--hairline);
       box-shadow: var(--card-shadow);
-      transform: rotate(2deg);
+      transform: rotate(calc(2deg - var(--hero-p, 0) * 2deg));
       transition: transform .4s ease;
     }
     .photo-frame:hover { transform: rotate(0deg); }
@@ -392,19 +406,6 @@
       display: flex; align-items: flex-start; gap: .9rem;
       margin-bottom: 1.35rem;
     }
-    .sec-no {
-      display: inline-grid;
-      place-items: center;
-      flex: none;
-      width: 2.1rem;
-      height: 2.1rem;
-      border: 1px solid var(--hairline);
-      border-radius: 7px;
-      font-family: var(--font-mono);
-      font-size: .8rem;
-      font-weight: 600;
-      color: var(--accent);
-    }
     h2.sec-title {
       font-size: 1.62rem;
       line-height: 2.1rem;   /* 与左侧徽章等高，顶部对齐后视觉中心一致 */
@@ -420,7 +421,7 @@
     }
 
     section.block p + p { margin-top: .85rem; }
-    section.block p { max-width: 72ch; }
+    section.block p { max-width: 85ch; margin-inline: auto; }
 
     /* ---------------- Biography ---------------- */
     .bio-links { font-weight: 500; }
@@ -451,12 +452,11 @@
       background: var(--hairline);
     }
 
-    ul.pubs { list-style: none; }
+    ul.pubs { list-style: none; max-width: 88ch; margin-inline: auto; }
     ul.pubs li {
       position: relative;
       padding: .3rem .6rem .3rem 2rem;
       margin: 0 0 .7rem -.6rem;
-      max-width: 76ch;
       border-radius: 6px;
       transition: background .25s ease;
     }
@@ -509,7 +509,7 @@
     }
 
     /* ---------------- 教学 / 服务 ---------------- */
-    ul.plain { list-style: none; max-width: 74ch; }
+    ul.plain { list-style: none; max-width: 86ch; margin-inline: auto; }
     ul.plain li {
       display: flex;
       gap: 1rem;
@@ -611,6 +611,9 @@
       display: none;
     }
     .festive-greet-nav.on { display: inline; }
+    /* 彩蛋 + 窄屏：菜单链接隐藏，祝福语保留（页脚另有完整版） */
+    @media (max-width: 820px) { .site-nav.has-egg .nav-links { display: none; } }
+    @media (max-width: 480px) { .festive-greet-nav { display: none !important; } }
     footer a { color: var(--ink-soft); background: none; }
     footer a:hover { color: var(--accent); }
 
@@ -661,12 +664,14 @@
     <div class="wrap">
       <a class="wordmark" href="#top">Zijia&nbsp;Chen</a>
       <span class="festive-greet-nav"></span>
+      <!-- 菜单导航（暂时停用，恢复时删除注释即可）
       <div class="nav-links">
-        <a href="#bio" data-zh="简介">Bio</a>
+        <a href="#bio" data-zh="个人简介">Biography</a>
         <a href="#education" data-zh="教育经历">Education</a>
         <a href="#pubs" data-zh="学术发表">Publications</a>
-        <a href="#service" data-zh="教学与服务">Service</a>
+        <a href="#service" data-zh="教学与服务">Teaching &amp; Service</a>
       </div>
+      -->
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="切换深浅色">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -731,13 +736,12 @@
     <!-- ============ 01 Biography ============ -->
     <section class="block" id="bio" data-reveal>
       <div class="sec-head">
-        <span class="sec-no">01</span>
         <h2 class="sec-title" data-zh="个人简介">Biography</h2>
       </div>
 
-      <p data-zh="我现在是清华大学的博士生，师从毛小介教授。此前，我于清华大学获得经济学学士（经济与金融专业）与理学学士（统计学专业）学位。">
-        I am now a Ph.D. student at Tsinghua University, advised by Prof. Xiaojie Mao.
-        Before that, I received my bachelor's degrees from Tsinghua University &mdash; a Bachelor in Economics
+      <p data-zh="我是陈梓佳，现在是清华大学的博士生，师从毛小介教授。此前，我于清华大学获得经济学学士（经济与金融专业）与理学学士（统计学专业）学位。">
+        I am Zijia Chen (陈梓佳), a Ph.D. student at Tsinghua University, advised by Prof. Xiaojie Mao.
+        Before starting my Ph.D., I received my bachelor's degrees from Tsinghua University &mdash; a Bachelor in Economics
         and Finance from the School of Economics and Management, and a Bachelor in Statistics from the
         Department of Statistics and Data Science.
       </p>
@@ -752,7 +756,6 @@
     <!-- ============ 02 Education ============ -->
     <section class="block" id="education" data-reveal>
       <div class="sec-head">
-        <span class="sec-no">02</span>
         <h2 class="sec-title" data-zh="教育经历">Education</h2>
       </div>
 
@@ -786,7 +789,6 @@
     <!-- ============ 03 Publications ============ -->
     <section class="block" id="pubs" data-reveal>
       <div class="sec-head">
-        <span class="sec-no">03</span>
         <h2 class="sec-title" data-zh="学术发表">Publications</h2>
       </div>
 
@@ -824,8 +826,7 @@
     <!-- ============ 04 Service ============ -->
     <section class="block" id="service" data-reveal>
       <div class="sec-head">
-        <span class="sec-no">04</span>
-        <h2 class="sec-title" data-zh="教学与服务">Service</h2>
+        <h2 class="sec-title" data-zh="教学与服务">Teaching &amp; Service</h2>
       </div>
 
       <!-- ✏️ 教学与学术服务：左边时间（mono-label），右边内容；课程名用 <em> 斜体 -->
@@ -958,6 +959,8 @@
         if (frame) frame.classList.add('fools-flip');
         if (caption) caption.classList.add('fools-on');
       }
+      var navEl = document.querySelector('.site-nav');
+      if (navEl) navEl.classList.add('has-egg');   // 彩蛋激活标记：窄屏下菜单链接让位
       var icon = document.querySelector('link[rel="icon"]');
       if (icon) icon.href = 'data:image/svg+xml,' + encodeURIComponent(fest.svg);
     })();
@@ -992,6 +995,25 @@
         try { localStorage.setItem('lang', toChinese ? 'zh' : 'en'); } catch (e) {}
         (toChinese ? toZh : toEn)();
       });
+    })();
+
+    // ---------- 页首随滚动渐隐 + 照片回正 ----------
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var hero = document.querySelector('header.hero');
+      if (!hero) return;
+      var frame = document.querySelector('.photo-frame');
+      var root = document.documentElement;
+      var ticking = false;
+      function update() {
+        ticking = false;
+        var p = Math.min(1, Math.max(0, window.scrollY / (hero.offsetHeight * 0.8)));
+        root.style.setProperty('--hero-p', p.toFixed(3));
+      }
+      window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      update();
     })();
 
     // ---------- 滚动时章节渐显 ----------
