@@ -186,11 +186,24 @@
     .hero-grid {
       display: grid;
       grid-template-columns: 1fr auto;
-      gap: clamp(1.6rem, 4vw, 3.2rem);
+      column-gap: clamp(1.6rem, 4vw, 3.2rem);
+      row-gap: 1.1rem;
       align-items: start;
+      grid-template-areas:
+        "identity photo"
+        "details  photo";
     }
+    .hero-identity { grid-area: identity; }
+    .hero-details { grid-area: details; }
+    .photo-col { grid-area: photo; }
+    .role-affils { margin-top: 0; }
     @media (max-width: 560px) {
 
+      .hero-grid {
+        grid-template-areas:
+          "identity photo"
+          "details  details";
+      }
       h1.name { font-size: 2rem; }
       .name-cn { font-size: .92rem; letter-spacing: .32em; }
     }
@@ -523,7 +536,8 @@
       to   { opacity: 1; transform: translateY(0); }
     }
     .hero-grid > * { animation: rise .7s cubic-bezier(.22,.9,.3,1) both; }
-    .hero-grid > :nth-child(2) { animation-delay: .12s; }
+    .hero-grid > :nth-child(2),
+    .hero-grid > :nth-child(3) { animation-delay: .12s; }
 
     [data-reveal] {
       opacity: 0;
@@ -567,11 +581,16 @@
 
   <header class="hero" id="top">
     <div class="wrap hero-grid">
-      <div class="info-col">
+      <div class="hero-identity">
         <h1 class="name">Zijia&nbsp;<em>Chen</em><span class="name-cn">陈梓佳</span></h1>
 
         <p class="role">
           <span class="role-title" data-zh="博士研究生">Ph.D. Student</span>
+        </p>
+      </div>
+
+      <div class="hero-details">
+        <p class="role role-affils">
           <span class="role-affil" data-zh="清华大学 经济管理学院 管理科学与工程系">Department of Management Science and Engineering</span>
           <span class="role-affil" data-zh="">School of Economics and Management, Tsinghua University</span>
         </p>
