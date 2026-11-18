@@ -256,7 +256,7 @@
       font-size: .95rem;
       color: var(--ink-soft);
     }
-    .role-affil:empty { display: none; }   /* 中文模式合并院系行后隐藏空行 */
+    .role-affil:empty { min-height: 1.7rem; }  /* 中文版保留同格式空行，与英文行高一致，切换语言不跳动 */
 
     /* 首屏研究兴趣：左侧等宽标签，右侧关键词逐行排布，避免折行 */
     .hero-interests {
@@ -521,6 +521,7 @@
       color: var(--accent);
     }
     .edu-note::before { content: "↳ "; }
+    .edu-note a { text-decoration: underline; text-underline-offset: 3px; }  /* 导师姓名常驻下划线，提示可点击 */
     @media (max-width: 560px) {
       ul.edu li { grid-template-columns: 1fr; gap: 0; }
       .edu-time { padding-top: 0; margin-bottom: .15rem; }
@@ -546,16 +547,15 @@
     .footer-bottom {
       flex-basis: 100%;
       display: grid;
-      grid-template-columns: 1fr auto 1fr;   /* 三等分：版权真居中，返回顶部贴右 */
-      align-items: baseline;
+      gap: .45rem;
+      justify-items: center;   /* 版权行与返回顶部各占一行，均居中 */
     }
-    .footer-copy { grid-column: 2; text-align: center; }
-    .footer-top  { grid-column: 3; justify-self: end; }
+    .footer-top { margin-top: 1rem; }  /* 返回顶部上方留一个空行（中英文相同） */
     footer a { color: var(--ink-soft); background: none; }
     footer a:hover { color: var(--accent); }
 
     /* 中文模式下，小号标注的中文字形适当放大（汉字笔画密，小字号可读性差） */
-    :lang(zh) .hi-label { font-size: .84rem; }
+    :lang(zh) .hi-label { font-size: .84rem; letter-spacing: .5em; }  /* 四字之间留半个字符间距 */
     :lang(zh) .edu-note { font-size: .84rem; }
     :lang(zh) .pub-year { font-size: .88rem; }
     :lang(zh) .mono-label,
@@ -645,7 +645,7 @@
           </a>
           <a href="https://scholar.google.com/citations?hl=en&amp;user=LcJ1DtAAAAAJ" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-            Google Scholar
+            <span data-zh="谷歌学术主页">Google Scholar</span>
           </a>
         </div>
       </div>
@@ -698,7 +698,7 @@
           <div>
             <span class="edu-degree" data-zh="管理科学与工程 · 博士研究生">Ph.D. Student in Management Science and Engineering</span>
             <span class="edu-school" data-zh="清华大学 经济管理学院">School of Economics and Management, Tsinghua University</span>
-            <span class="edu-note" data-zh="导师：毛小介教授">Advisor: Prof. Xiaojie Mao</span>
+            <span class="edu-note" data-zh="导师：<a href='https://www.sem.tsinghua.edu.cn/info/1210/31876.htm' target='_blank' rel='noopener'>毛小介</a>教授">Advisor: Prof. <a href="https://www.sem.tsinghua.edu.cn/info/1210/31876.htm" target="_blank" rel="noopener">Xiaojie Mao</a></span>
           </div>
         </li>
         <li>
