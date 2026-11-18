@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zijia Chen</title>
+  <meta name="description" content="Zijia Chen (陈梓佳) — Ph.D. student at the School of Economics and Management, Tsinghua University">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23660874'/><text x='50' y='68' font-size='52' font-family='Georgia,serif' fill='%23f7f4ee' text-anchor='middle'>ZC</text></svg>">
+
+  <!-- 字体走国内镜像 fonts.loli.net（Google Fonts 公益镜像）；preconnect 指向镜像域名 -->
+  <link rel="preconnect" href="https://fonts.loli.net">
+  <link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
+  <link href="https://fonts.loli.net/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <noscript>
+    <style>[data-reveal] { opacity: 1; transform: none; }</style>
+  </noscript>
+  <style>
+    /* ============================================================
+       学术主页 · 设计变量
+       ✏️ 想换配色：只改下面 --accent 等变量即可
+       ============================================================ */
+    :root {
+      --bg: #f7f4ee;            /* 暖纸色背景 */
+      --bg-soft: #efebe1;       /* 稍深的底色（代码块/卡片） */
+      --ink: #211f1a;           /* 正文墨色 */
+      --ink-soft: #6b655a;      /* 次要文字 */
+      --accent: #660874;        /* 点缀色：清华紫（官方 VI：C65 M100 Y0 K20 / #660874） */
+      --accent-bright: #831a97;
+      --accent-soft: rgba(102, 8, 116, 0.07);
+      --hairline: rgba(33, 31, 26, 0.16);
+      --card-shadow: 0 1px 2px rgba(33,31,26,.05), 0 12px 32px -18px rgba(33,31,26,.35);
+      --font-display: "Newsreader", "Noto Serif SC", Georgia, "Times New Roman", serif;
+      --font-mono: "IBM Plex Mono", "Noto Serif SC", ui-monospace, "SF Mono", Consolas, monospace;
+      --maxw: 880px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #221f1a;             /* "假黑"：带暖调的深灰，比纯黑柔和耐看 */
+      --bg-soft: #2b2720;
+      --ink: #ede8dc;
+      --ink-soft: #a9a190;
+      --accent: #ff4d00;         /* 南科大橙（CMYK C0 M70 Y100 K0 ≈ #FF4D00） */
+      --accent-bright: #ff7033;
+      --accent-soft: rgba(255, 77, 0, 0.10);
+      --hairline: rgba(237, 232, 220, 0.20);
+      --card-shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 40px -20px rgba(0,0,0,.7);
+    }
+
+    /* ---------------- 基础 ---------------- */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      line-height: 1.78;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      transition: background .35s ease, color .35s ease;
+    }
+
+    ::selection { background: var(--accent); color: var(--bg); }
+
+    /* 纸张颗粒质感：极低透明度噪点，去除屏幕的"平"感 */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    }
+    [data-theme="dark"] body::before { opacity: .4; }
+
+    /* 期刊刊头式双线：粗紫线 + 细发丝线 */
+    .masthead-rule {
+      height: 6px;
+      border-top: 2px solid var(--accent);
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 2.2rem;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      background-image: linear-gradient(currentColor, currentColor);
+      background-size: 0% 1px;
+      background-position: 0 100%;
+      background-repeat: no-repeat;
+      transition: background-size .25s ease, color .2s ease;
+    }
+    a:hover { background-size: 100% 1px; color: var(--accent-bright); }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 clamp(1.1rem, 4vw, 2.2rem);
+    }
+
+    .skip {
+      position: absolute; left: -9999px; top: 0;
+      background: var(--accent); color: var(--bg);
+      padding: .5rem 1rem; z-index: 99;
+    }
+    .skip:focus { left: 1rem; top: 1rem; }
+
+    /* ---------------- 顶部导航 ---------------- */
+    .site-nav {
+      position: sticky; top: 0; z-index: 50;
+      background: color-mix(in srgb, var(--bg) 82%, transparent);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .site-nav .wrap {
+      display: flex; align-items: center; gap: 1.2rem;
+      min-height: 3.4rem;
+    }
+    .wordmark {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 1.08rem;
+      letter-spacing: .01em;
+      color: var(--ink);
+      background: none;
+      transition: color .2s ease;
+    }
+    .wordmark:hover { color: var(--accent); }
+    .nav-links {
+      display: flex; gap: 1.15rem; margin-left: auto;
+      font-family: var(--font-mono);
+      font-size: .78rem; letter-spacing: .04em;
+    }
+    .nav-links a {
+      color: var(--ink-soft);
+      background: none;
+      padding: .2rem 0;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .theme-toggle {
+      margin-left: .4rem;
+      width: 2rem; height: 2rem;
+      display: grid; place-items: center;
+      border: 1px solid var(--hairline);
+      border-radius: 50%;
+      background: none; cursor: pointer;
+      color: var(--ink-soft);
+      transition: color .2s, border-color .2s, transform .3s;
+    }
+    .theme-toggle:hover { color: var(--accent); border-color: var(--accent); transform: rotate(20deg); }
+    .theme-toggle svg { width: 15px; height: 15px; }
+    [data-theme="light"] .icon-sun { display: none; }
+    [data-theme="dark"] .icon-moon { display: none; }
+
+    /* 中英文切换按钮 */
+    .lang-toggle {
+      margin-left: .2rem;
+      height: 2rem;
+      min-width: 2rem;
+      padding: 0 .55rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      background: none;
+      cursor: pointer;
+      color: var(--ink-soft);
+      font-family: var(--font-mono);
+      font-size: .74rem;
+      transition: color .2s, border-color .2s;
+    }
+    .lang-toggle:hover { color: var(--accent); border-color: var(--accent); }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+    }
+
+    /* ---------------- 页眉 Hero ---------------- */
+    header.hero { padding: clamp(2.6rem, 7vw, 4.6rem) 0 2.4rem; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: clamp(1.6rem, 4vw, 3.2rem);
+      align-items: start;
+    }
+    @media (max-width: 560px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .photo-col { order: -1; }
+    }
+
+    /* ✏️ 姓名 */
+    h1.name {
+      font-size: clamp(2.5rem, 6.5vw, 3.7rem);
+      font-weight: 500;
+      line-height: 1.06;
+      letter-spacing: -0.015em;
+    }
+    h1.name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .name-cn {
+      display: block;
+      margin-top: .45rem;
+      font-size: 1.05rem;
+      font-weight: 400;
+      letter-spacing: .4em;
+      color: var(--ink-soft);
+    }
+
+    /* 职位与单位：职位加重一行，院系/学校逐行次淡显示 */
+    .role {
+      margin-top: .6rem;
+      display: grid;
+      gap: .12rem;
+    }
+    .role-title {
+      font-size: 1.28rem;
+      font-weight: 500;
+      letter-spacing: .01em;
+      color: var(--ink);
+    }
+    .role-affil {
+      font-size: .95rem;
+      color: var(--ink-soft);
+    }
+    .role-affil:empty { display: none; }   /* 中文模式合并院系行后隐藏空行 */
+
+    /* 首屏研究兴趣：左侧等宽标签，右侧关键词逐行排布，避免折行 */
+    .hero-interests {
+      margin-top: 1.25rem;
+      display: grid;
+      grid-template-columns: 9.8rem 1fr;
+      column-gap: 1.2rem;
+      row-gap: .3rem;
+      align-items: start;
+    }
+    .hi-label {
+      padding-top: .3rem;
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .hi-items { list-style: none; }
+    .hi-items li { font-style: italic; font-size: 1.03rem; line-height: 1.55; }
+    @media (max-width: 560px) {
+      .hero-interests { grid-template-columns: 1fr; }
+      .hi-label { padding-top: 0; }
+    }
+
+    .address {
+      margin-top: 1.1rem;
+      font-size: .95rem;
+      font-style: italic;
+      color: var(--ink-soft);
+      line-height: 1.65;
+    }
+
+    .contact-row {
+      margin-top: 1.25rem;
+      display: flex; flex-wrap: wrap; gap: .9rem;
+    }
+    .contact-row a {
+      display: inline-flex; align-items: center; gap: .42rem;
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      padding: .34rem .8rem;
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      color: var(--ink);
+      background: none;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .contact-row a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .contact-row svg { width: 14px; height: 14px; flex: none; }
+
+    /* 头像：默认显示占位方块；换照片时见 HTML 中注释 */
+    .photo-frame {
+      position: relative;
+      z-index: 0;
+      width: clamp(150px, 20vw, 200px);
+      padding: 8px;
+      background: var(--bg);
+      border: 1px solid var(--hairline);
+      box-shadow: var(--card-shadow);
+      transform: rotate(2deg);
+      transition: transform .4s ease;
+    }
+    .photo-frame:hover { transform: rotate(0deg); }
+    /* 错位紫色衬框：像印版套线 */
+    .photo-frame::before {
+      content: "";
+      position: absolute;
+      inset: 12px -12px -12px 12px;
+      border: 1px solid var(--accent);
+      opacity: .4;
+      z-index: -1;
+      transition: opacity .4s ease, inset .4s ease;
+    }
+    .photo-frame:hover::before { opacity: .8; }
+    .photo-frame img {
+      display: block; width: 100%;
+      aspect-ratio: 2 / 3; object-fit: cover;
+    }
+
+    /* ---------------- 章节通用 ---------------- */
+    main { padding-bottom: 3rem; }
+
+    section.block {
+      padding: 2.3rem 0;
+      border-top: 1px solid var(--hairline);
+    }
+    section.block:first-of-type { border-top: none; }
+    /* 锚点跳转时，标题落在吸顶导航下方而不是被遮住 */
+    section[id] { scroll-margin-top: 4.6rem; }
+
+    .sec-head {
+      display: flex; align-items: flex-start; gap: .9rem;
+      margin-bottom: 1.35rem;
+    }
+    .sec-no {
+      display: inline-grid;
+      place-items: center;
+      flex: none;
+      width: 2.1rem;
+      height: 2.1rem;
+      border: 1px solid var(--hairline);
+      border-radius: 7px;
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    h2.sec-title {
+      font-size: 1.62rem;
+      line-height: 2.1rem;   /* 与左侧徽章等高，顶部对齐后视觉中心一致 */
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    h2.sec-title::after {
+      content: "";
+      display: block;
+      width: 2.6rem; height: 2px;
+      margin-top: .45rem;
+      background: var(--accent);
+    }
+
+    section.block p + p { margin-top: .85rem; }
+    section.block p { max-width: 72ch; }
+
+    /* ---------------- Biography ---------------- */
+    .bio-links { font-weight: 500; }
+
+    /* ---------------- 论文列表 ---------------- */
+    .pub-note {
+      font-family: var(--font-mono);
+      font-size: .78rem;
+      color: var(--ink-soft);
+      margin: -0.7rem 0 1.4rem;
+    }
+
+    .pub-year {
+      display: flex; align-items: center; gap: 1rem;
+      margin: 2.1rem 0 .9rem;
+      font-family: var(--font-mono);
+      font-size: .82rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+    .pub-year:first-of-type { margin-top: .4rem; }
+    .pub-year::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--hairline);
+    }
+
+    ul.pubs { list-style: none; }
+    ul.pubs li {
+      position: relative;
+      padding: .3rem .6rem .3rem 2rem;
+      margin: 0 0 .7rem -.6rem;
+      max-width: 76ch;
+      border-radius: 6px;
+      transition: background .25s ease;
+    }
+    ul.pubs li::before {
+      content: attr(data-marker);
+      position: absolute; left: .6rem; top: .55em;
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      color: var(--ink-soft);
+      transition: color .25s ease;
+    }
+    ul.pubs li:hover { background: var(--accent-soft); }
+    ul.pubs li:hover::before { color: var(--accent); }
+    .pub-authors { font-size: .99rem; }
+    .self { font-weight: 600; }          /* 论文里自己的名字加粗 */
+    .pub-venue { font-style: italic; }
+    .pub-award {
+      font-family: var(--font-mono);
+      font-style: normal;
+      font-size: .74rem;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      padding: .08rem .5rem;
+      white-space: nowrap;
+    }
+    .pub-links {
+      margin-top: .18rem;
+      display: flex; flex-wrap: wrap; gap: .55rem;
+      font-family: var(--font-mono);
+      font-size: .74rem;
+    }
+    .pub-links a {
+      color: var(--ink-soft);
+      border: 1px solid var(--hairline);
+      border-radius: 4px;
+      padding: .06rem .5rem;
+      background: none;
+    }
+    .pub-links a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .pub-links a::after {
+      content: "↗";
+      margin-left: .3rem;
+      font-size: .85em;
+      opacity: .55;
+    }
+
+    /* ---------------- 教学 / 服务 ---------------- */
+    ul.plain { list-style: none; max-width: 74ch; }
+    ul.plain li {
+      display: flex;
+      gap: 1rem;
+      align-items: baseline;
+      padding: .42rem 0;
+      border-bottom: 1px dashed var(--hairline);
+    }
+    ul.plain li:last-child { border-bottom: none; }
+    .mono-label {
+      flex: none;
+      min-width: 8.2rem;
+      font-family: var(--font-mono);
+      font-size: .78rem;
+      color: var(--ink-soft);
+    }
+
+    /* ---------------- 教育经历：学位/学校/备注 三级层次 ---------------- */
+    ul.edu { list-style: none; }
+    ul.edu li {
+      display: grid;
+      grid-template-columns: 8.5rem 1fr;
+      gap: 0 1.4rem;
+      padding: 1rem 0;
+      border-bottom: 1px dashed var(--hairline);
+    }
+    ul.edu li:last-child { border-bottom: none; }
+    .edu-time {
+      padding-top: .3rem;
+      font-family: var(--font-mono);
+      font-size: .78rem;
+      color: var(--ink-soft);
+      white-space: nowrap;
+    }
+    .edu-degree {
+      font-weight: 600;
+      letter-spacing: .01em;
+    }
+    .edu-school {
+      display: block;
+      margin-top: .12rem;
+      font-size: .95rem;
+      color: var(--ink-soft);
+    }
+    .edu-note {
+      display: block;
+      margin-top: .35rem;
+      font-family: var(--font-mono);
+      font-size: .76rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .edu-note::before { content: "↳ "; }
+    @media (max-width: 560px) {
+      ul.edu li { grid-template-columns: 1fr; gap: 0; }
+      .edu-time { padding-top: 0; margin-bottom: .15rem; }
+    }
+
+    /* ---------------- 页脚 ---------------- */
+    footer {
+      border-top: 1px solid var(--hairline);
+      padding: 1.6rem 0 2.8rem;
+      font-family: var(--font-mono);
+      font-size: .76rem;
+      color: var(--ink-soft);
+    }
+    footer .wrap {
+      display: flex; flex-wrap: wrap; gap: .8rem 1.6rem;
+      justify-content: space-between;
+    }
+    footer a { color: var(--ink-soft); background: none; }
+    footer a:hover { color: var(--accent); }
+
+    /* 中文模式下，小号标注的中文字形适当放大（汉字笔画密，小字号可读性差） */
+    :lang(zh) .hi-label { font-size: .84rem; }
+    :lang(zh) .edu-note { font-size: .84rem; }
+    :lang(zh) .pub-year { font-size: .88rem; }
+    :lang(zh) .mono-label,
+    :lang(zh) .edu-time { font-size: .84rem; }
+
+    /* ---------------- 动效 ---------------- */
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-grid > * { animation: rise .7s cubic-bezier(.22,.9,.3,1) both; }
+    .hero-grid > :nth-child(2) { animation-delay: .12s; }
+
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity .65s ease, transform .65s cubic-bezier(.22,.9,.3,1);
+    }
+    [data-reveal].in { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .hero-grid > *, [data-reveal] { animation: none; opacity: 1; transform: none; transition: none; }
+      .photo-frame { transform: none; }
+    }
+
+    @media print {
+      .site-nav, .theme-toggle, .skip { display: none; }
+      body { background: #fff; color: #000; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- ======================= 导航 ======================= -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="wrap">
+      <a class="wordmark" href="#top">Zijia&nbsp;Chen</a>
+      <div class="nav-links">
+        <a href="#bio" data-zh="简介">Bio</a>
+        <a href="#education" data-zh="教育经历">Education</a>
+        <a href="#pubs" data-zh="学术发表">Publications</a>
+        <a href="#service" data-zh="教学与服务">Service</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="切换深浅色">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="lang-toggle" id="langToggle" aria-label="切换中英文" title="切换中英文">中</button>
+    </div>
+  </nav>
+
+  <!-- ======================= 页眉 ======================= -->
+  <header class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div class="info-col">
+        <h1 class="name">Zijia&nbsp;<em>Chen</em><span class="name-cn">陈梓佳</span></h1>
+
+        <p class="role">
+          <span class="role-title" data-zh="博士研究生">Ph.D. Student</span>
+          <span class="role-affil" data-zh="清华大学 经济管理学院 管理科学与工程系">Department of Management Science and Engineering</span>
+          <span class="role-affil" data-zh="">School of Economics and Management, Tsinghua University</span>
+        </p>
+
+        <!-- ✏️ 首屏研究兴趣关键词：改下面的 <li> 即可，样式自动带中点分隔 -->
+        <div class="hero-interests">
+          <span class="hi-label" data-zh="研究方向">Research&nbsp;Interests</span>
+          <ul class="hi-items">
+            <li data-zh="因果推断">Causal Inference</li>
+            <li data-zh="统计机器学习">Statistical Machine Learning</li>
+            <li data-zh="数据驱动决策">Data-Driven Decision Making</li>
+          </ul>
+        </div>
+
+        <p class="address" data-zh="清华大学 北京 100084">
+          Tsinghua University, Beijing, China&nbsp; 100084
+        </p>
+
+        <!-- ✏️ 联系方式：邮箱 / Google Scholar / 主页等，按需增删 -->
+        <div class="contact-row">
+          <!-- ✏️ 防爬虫邮箱：源码中不含完整地址，点击时由 JS 拼接。
+               换邮箱时改 data-user / data-domain 和可见文字即可 -->
+          <a href="#" id="emailLink" data-user="chen-zj21" data-domain="mails.tsinghua.edu.cn" aria-label="Send email" title="点击发送邮件 / Click to email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+            <span data-zh="邮箱">Email</span>
+          </a>
+          <a href="https://scholar.google.com/citations?hl=en&amp;user=LcJ1DtAAAAAJ" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            Google Scholar
+          </a>
+        </div>
+      </div>
+
+      <div class="photo-col">
+        <figure class="photo-frame">
+          <!-- ✏️ 以后换照片：直接用新文件覆盖同目录下的 photo.jpg 即可 -->
+          <img src="photo.jpg" alt="Zijia Chen 陈梓佳">
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================= 正文 ======================= -->
+  <main id="main" class="wrap">
+    <div class="masthead-rule" aria-hidden="true"></div>
+
+    <!-- ============ 01 Biography ============ -->
+    <section class="block" id="bio" data-reveal>
+      <div class="sec-head">
+        <span class="sec-no">01</span>
+        <h2 class="sec-title" data-zh="个人简介">Biography</h2>
+      </div>
+
+      <p data-zh="我现在是清华大学的博士生，师从毛小介教授。此前，我于清华大学获得经济学学士（经济与金融专业）与理学学士（统计学专业）学位。">
+        I am now a Ph.D. student at Tsinghua University, advised by Prof. Xiaojie Mao.
+        Before that, I received my bachelor's degrees from Tsinghua University &mdash; a B.Ec. in Economics
+        and Finance from the School of Economics and Management, and a B.S. in Statistics from the
+        Department of Statistics and Data Science.
+      </p>
+      <p data-zh="目前，我主要致力于因果推断、统计机器学习与数据驱动决策相关方法的研究。如果你有相似的兴趣或想交流想法，欢迎与我联系！">
+        Currently, I mainly work on methods related to <span class="bio-links">causal inference</span>,
+        <span class="bio-links">statistical machine learning</span>, and
+        <span class="bio-links">data-driven decision making</span>.
+        If you share similar interests or would like to exchange ideas, feel free to reach out!
+      </p>
+    </section>
+
+    <!-- ============ 02 Education ============ -->
+    <section class="block" id="education" data-reveal>
+      <div class="sec-head">
+        <span class="sec-no">02</span>
+        <h2 class="sec-title" data-zh="教育经历">Education</h2>
+      </div>
+
+      <!-- ✏️ 教育经历：时间 | 学位（加粗）/ 学校（次要色）/ 备注（如导师，红色等宽字体） -->
+      <ul class="edu">
+        <li>
+          <span class="edu-time" data-zh="2025 – 至今">2025 &ndash; Present</span>
+          <div>
+            <span class="edu-degree" data-zh="管理科学与工程 · 博士研究生">Ph.D. Student in Management Science and Engineering</span>
+            <span class="edu-school" data-zh="清华大学 经济管理学院">School of Economics and Management, Tsinghua University</span>
+            <span class="edu-note" data-zh="导师：毛小介教授">Advisor: Prof. Xiaojie Mao</span>
+          </div>
+        </li>
+        <li>
+          <span class="edu-time">2021 &ndash; 2025</span>
+          <div>
+            <span class="edu-degree" data-zh="经济与金融 · 学士">B.Ec. in Economics and Finance</span>
+            <span class="edu-school" data-zh="清华大学 经济管理学院">School of Economics and Management, Tsinghua University</span>
+          </div>
+        </li>
+        <li>
+          <span class="edu-time">2021 &ndash; 2025</span>
+          <div>
+            <span class="edu-degree" data-zh="统计学 · 学士">B.S. in Statistics</span>
+            <span class="edu-school" data-zh="清华大学 统计与数据科学系">Department of Statistics and Data Science, Tsinghua University</span>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ============ 03 Publications ============ -->
+    <section class="block" id="pubs" data-reveal>
+      <div class="sec-head">
+        <span class="sec-no">03</span>
+        <h2 class="sec-title" data-zh="学术发表">Publications</h2>
+      </div>
+
+      <!-- 标记说明：† 共同一作。图例行暂隐藏——† 的严格含义由图例定义，
+           需要恢复显示时取消下一行注释即可；
+           以后有通讯作者时名字后加 <sup>*</sup>，图例行用 "†Equal contribution, *Corresponding author" -->
+      <!-- <p class="pub-note">†Equal contribution</p> -->
+
+      <!-- ✏️ 工作论文（未刊）放这里（Working Papers） -->
+      <h3 class="pub-year" data-zh="工作论文">Working Papers</h3>
+      <ul class="pubs">
+        <li data-marker="[1]">
+          <span class="pub-authors">Xixi Li<sup>†</sup>, <span class="self">Zijia Chen<sup>†</sup></span>, James W.&nbsp;Taylor, and Xiaojie Mao.
+          A Forecast Combination Framework for Hierarchical and Grouped Time Series Reconciliation.
+          <span class="pub-venue">arXiv:2608.13886 (2026+)</span></span>
+          <span class="pub-links">
+            <a href="https://arxiv.org/abs/2608.13886" target="_blank" rel="noopener">arXiv</a>
+            <a href="https://arxiv.org/pdf/2608.13886" target="_blank" rel="noopener">PDF</a>
+          </span>
+        </li>
+      </ul>
+
+      <!-- ✏️ 已正式发表的论文按年份倒序分组，需要时删除本行与本段末尾的注释标记即可
+      <h3 class="pub-year">Year 2026</h3>
+      <ul class="pubs">
+        <li data-marker="[2]">
+          <span class="pub-authors">A. Author, <span class="self">Zijia Chen</span>, and B. Author.
+          Paper Title Goes Here. <span class="pub-venue">Journal / Conference Name</span></span>
+          <span class="pub-links"><a href="#">PDF</a><a href="#">Code</a></span>
+        </li>
+      </ul>
+      -->
+    </section>
+
+    <!-- ============ 04 Service ============ -->
+    <section class="block" id="service" data-reveal>
+      <div class="sec-head">
+        <span class="sec-no">04</span>
+        <h2 class="sec-title" data-zh="教学与服务">Service</h2>
+      </div>
+
+      <!-- ✏️ 教学与学术服务：左边时间（mono-label），右边内容；课程名用 <em> 斜体 -->
+      <ul class="plain">
+        <li>
+          <span class="mono-label" data-zh="2026 秋">Fall 2026</span>
+          <span data-zh="《数智前沿讲座(1)》助教">Teaching Assistant, <em>Frontier Lectures in Data Science and Artificial Intelligence (I)</em></span>
+        </li>
+        <li>
+          <span class="mono-label" data-zh="2025 – 至今">2025 &ndash; Present</span>
+          <span data-zh="清华大学经济管理学院“数据科学与人工智能荣誉班”辅导员">Assistant Class Advisor, <em>Data Science and Artificial Intelligence Honor Program</em>, School of Economics and Management, Tsinghua University</span>
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <!-- ======================= 页脚 ======================= -->
+  <footer>
+    <div class="wrap">
+      <span data-zh="© 2026 陈梓佳 · 最后更新：2026 年 11 月">© 2026 Zijia Chen · Last updated: November 2026</span>
+      <span><a href="#top" data-zh="返回顶部 ↑">Back to top ↑</a></span>
+    </div>
+  </footer>
+
+  <script>
+    // ---------- 深浅色切换（记住选择） ----------
+    (function () {
+      var toggle = document.getElementById('themeToggle');
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      if (saved === 'dark' || saved === 'light') {
+        document.documentElement.dataset.theme = saved;
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.dataset.theme = 'dark';   // 系统深色的访客自动进深色版
+      }
+      toggle.addEventListener('click', function () {
+        var next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        try { localStorage.setItem('theme', next); } catch (e) {}
+      });
+    })();
+
+    // ---------- 防爬虫邮箱：点击时拼接真实地址 ----------
+    (function () {
+      var link = document.getElementById('emailLink');
+      if (!link) return;
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.location.href = 'mailto:' + link.dataset.user + '@' + link.dataset.domain;
+      });
+    })();
+
+    // ---------- 中英文切换 ----------
+    (function () {
+      var button = document.getElementById('langToggle');
+      var items = Array.prototype.slice.call(document.querySelectorAll('[data-zh]'));
+      var titles = { en: "Zijia Chen", zh: "Zijia Chen" };
+      function toZh() {
+        items.forEach(function (el) {
+          if (!el.dataset.enHtml) el.dataset.enHtml = el.innerHTML;
+          el.innerHTML = el.dataset.zh;
+        });
+        document.documentElement.lang = 'zh';
+        button.textContent = 'EN';
+        document.title = titles.zh;
+      }
+      function toEn() {
+        items.forEach(function (el) {
+          if (el.dataset.enHtml) el.innerHTML = el.dataset.enHtml;
+        });
+        document.documentElement.lang = 'en';
+        button.textContent = '中';
+        document.title = titles.en;
+      }
+      var saved = null;
+      try { saved = localStorage.getItem('lang'); } catch (e) {}
+      (saved === 'zh' ? toZh : toEn)();
+      button.addEventListener('click', function () {
+        var toChinese = document.documentElement.lang !== 'zh';
+        try { localStorage.setItem('lang', toChinese ? 'zh' : 'en'); } catch (e) {}
+        (toChinese ? toZh : toEn)();
+      });
+    })();
+
+    // ---------- 滚动时章节渐显 ----------
+    (function () {
+      if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('[data-reveal]').forEach(function (el) { el.classList.add('in'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+        });
+      }, { threshold: 0.08 });
+      document.querySelectorAll('[data-reveal]').forEach(function (el) { io.observe(el); });
+    })();
+
+  </script>
+</body>
+</html>
