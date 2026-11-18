@@ -613,7 +613,11 @@
     .festive-greet-nav.on { display: inline; }
     /* 彩蛋 + 窄屏：菜单链接隐藏，祝福语保留（页脚另有完整版） */
     @media (max-width: 820px) { .site-nav.has-egg .nav-links { display: none; } }
-    @media (max-width: 480px) { .festive-greet-nav { display: none !important; } }
+    /* 更窄屏幕：彩蛋激活时由祝福语顶替导航签名（大名就在正下方首屏，无信息损失） */
+    @media (max-width: 560px) {
+      .site-nav.has-egg .wordmark { display: none; }
+      .festive-greet-nav { font-size: .68rem; }
+    }
     footer a { color: var(--ink-soft); background: none; }
     footer a:hover { color: var(--accent); }
 
