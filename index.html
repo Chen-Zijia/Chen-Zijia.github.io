@@ -13,7 +13,14 @@
   <meta property="og:title" content="Zijia Chen 陈梓佳">
   <meta property="og:description" content="Ph.D. student at the School of Economics and Management, Tsinghua University. Research: causal inference, statistical machine learning, and data-driven decision making.">
   <meta property="og:url" content="https://chen-zijia.github.io/">
-  <meta property="og:image" content="https://chen-zijia.github.io/photo.jpg">
+  <meta property="og:image" content="https://chen-zijia.github.io/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Zijia Chen — Ph.D. student at Tsinghua SEM">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Zijia Chen 陈梓佳">
+  <meta name="twitter:description" content="Ph.D. student at Tsinghua SEM. Causal inference, statistical machine learning, and data-driven decision making.">
+  <meta name="twitter:image" content="https://chen-zijia.github.io/og-image.png">
 
   <!-- 结构化数据：Schema.org Person -->
   <script type="application/ld+json">
@@ -28,7 +35,7 @@
     "worksFor": { "@type": "Organization", "name": "School of Economics and Management, Tsinghua University" },
     "alumniOf": { "@type": "CollegeOrUniversity", "name": "Tsinghua University" },
     "knowsAbout": ["Causal Inference", "Statistical Machine Learning", "Data-Driven Decision Making"],
-    "sameAs": ["https://scholar.google.com/citations?user=LcJ1DtAAAAAJ"]
+    "sameAs": ["https://scholar.google.com/citations?user=LcJ1DtAAAAAJ", "https://orcid.org/0009-0003-0402-5037"]
   }
   </script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23660874'/><text x='50' y='68' font-size='52' font-family='Georgia,serif' fill='%23f7f4ee' text-anchor='middle'>ZC</text></svg>">
@@ -36,7 +43,7 @@
   <!-- 字体走国内镜像 fonts.loli.net（Google Fonts 公益镜像）；preconnect 指向镜像域名 -->
   <link rel="preconnect" href="https://fonts.loli.net">
   <link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
-  <link href="https://fonts.loli.net/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.loli.net/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
 
   <noscript>
     <style>[data-reveal] { opacity: 1; transform: none; }</style>
@@ -58,6 +65,9 @@
       --card-shadow: 0 1px 2px rgba(33,31,26,.05), 0 12px 32px -18px rgba(33,31,26,.35);
       --font-display: "Newsreader", "Noto Serif SC", Georgia, "Times New Roman", serif;
       --font-mono: "IBM Plex Mono", "Noto Serif SC", ui-monospace, "SF Mono", Consolas, monospace;
+      --font-sign: "Playfair Display", "Noto Serif SC", Georgia, serif;   /* 导航签名专用 */
+      --font-first: "Playfair Display", "Noto Serif SC", Georgia, serif;   /* 名字 Zijia 专用 */
+      --font-title: "Cinzel", "Noto Serif SC", Georgia, serif;   /* 节标题：碑刻风 */
       --maxw: 880px;
     }
 
@@ -150,7 +160,7 @@
     /* ---------------- 顶部导航 ---------------- */
     .site-nav {
       position: sticky; top: 0; z-index: 50;
-      background: color-mix(in srgb, var(--bg) 82%, transparent);
+      background: color-mix(in srgb, var(--bg-soft) 88%, transparent);   /* 比主背景深半档，首尾带子轻浮于纸面 */
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--hairline);
@@ -160,7 +170,7 @@
       min-height: 3.4rem;
     }
     .wordmark {
-      font-family: var(--font-display);
+      font-family: var(--font-sign);
       font-style: italic;
       font-weight: 500;
       font-size: 1.08rem;
@@ -230,7 +240,23 @@
     }
 
     /* ---------------- 页眉 Hero ---------------- */
-    header.hero { padding: clamp(2.6rem, 7vw, 4.6rem) 0 2.4rem; }
+    header.hero {
+      padding: clamp(2.6rem, 7vw, 4.6rem) 0 2.4rem;
+      position: relative;
+    }
+    /* 页首图案：统计"坐标纸"网格，向下渐隐没入刊头双线 */
+    header.hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(color-mix(in srgb, var(--ink) 5%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--ink) 5%, transparent) 1px, transparent 1px);
+      background-size: 26px 26px;
+      -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+      mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+    }
 
     .hero-grid {
       display: grid;
@@ -269,6 +295,10 @@
     h1.name em {
       font-style: italic;
       color: var(--accent);
+    }
+    .name-first {
+      font-family: var(--font-first);
+      font-weight: 500;
     }
     .name-cn {
       display: block;
@@ -350,11 +380,12 @@
       position: relative;
       z-index: 0;
       width: clamp(150px, 20vw, 200px);
-      margin-right: .85rem;   /* 照片右侧留一点呼吸空间（衬框刚好贴齐容器边） */
+      margin-right: 1.15rem;  /* 照片整体左移一点点，右侧呼吸空间稍增 */
       padding: 8px;
       background: var(--bg);
       border: 1px solid var(--hairline);
       box-shadow: var(--card-shadow);
+      border-radius: 8px;
       transform: rotate(calc(2deg - var(--hero-p, 0) * 2deg));
       transition: transform .4s ease;
     }
@@ -365,6 +396,7 @@
       position: absolute;
       inset: 12px -12px -12px 12px;
       border: 1px solid var(--accent);
+      border-radius: 8px;
       opacity: .4;
       z-index: -1;
       transition: opacity .4s ease, inset .4s ease;
@@ -388,6 +420,7 @@
     .photo-frame.fools-flip:hover ~ .fools-caption.fools-on { opacity: 1; }
     .photo-frame img {
       display: block; width: 100%;
+      border-radius: 5px;
       aspect-ratio: 2 / 3; object-fit: cover;
     }
 
@@ -407,6 +440,9 @@
       margin-bottom: 1.35rem;
     }
     h2.sec-title {
+      font-family: var(--font-title);
+      font-weight: 500;
+      letter-spacing: .03em;
       font-size: 1.62rem;
       line-height: 2.1rem;   /* 与左侧徽章等高，顶部对齐后视觉中心一致 */
       font-weight: 500;
@@ -515,9 +551,12 @@
       gap: 1rem;
       align-items: baseline;
       padding: .42rem 0;
-      border-bottom: 1px dashed var(--hairline);
+      background-image: repeating-linear-gradient(90deg, var(--hairline) 0 2px, transparent 2px 6px);   /* 与 Education 一致的点状密虚线 */
+      background-size: calc(100% - 1.5rem) 1px;
+      background-position: center 100%;
+      background-repeat: no-repeat;
     }
-    ul.plain li:last-child { border-bottom: none; }
+    ul.plain li:last-child { background-image: none; }
     .mono-label {
       flex: none;
       min-width: 8.2rem;
@@ -532,10 +571,17 @@
       display: grid;
       grid-template-columns: 8.5rem 1fr;
       gap: 0 1.4rem;
-      padding: 1rem 0;
-      border-bottom: 1px dashed var(--hairline);
+      padding: 1rem .6rem;
+      margin: 0 -.6rem;   /* 负边距补偿内边距，文字仍与容器边缘对齐 */
+      border-radius: 6px;
+      transition: background-color .25s ease;
+      background-image: repeating-linear-gradient(90deg, var(--hairline) 0 2px, transparent 2px 6px);   /* 点状密虚线：2px 点、4px 隙 */
+      background-size: calc(100% - 1.5rem) 1px;   /* 虚线左右各收进 0.75rem */
+      background-position: center 100%;
+      background-repeat: no-repeat;
     }
-    ul.edu li:last-child { border-bottom: none; }
+    ul.edu li:hover { background-color: var(--accent-soft); }   /* 与论文条目同款；用 background-color 以保留虚线 */
+    ul.edu li:last-child { background-image: none; }
     .edu-time {
       padding-top: .3rem;
       font-family: var(--font-mono);
@@ -571,6 +617,7 @@
     /* ---------------- 页脚 ---------------- */
     footer {
       border-top: 1px solid var(--hairline);
+      background: var(--bg-soft);
       padding: 1.6rem 0 2.8rem;
       font-family: var(--font-mono);
       font-size: .76rem;
@@ -625,8 +672,7 @@
     :lang(zh) .hi-label { font-size: .84rem; letter-spacing: .5em; }  /* 四字之间留半个字符间距 */
     :lang(zh) .edu-note { font-size: .84rem; }
     :lang(zh) .pub-year { font-size: .88rem; }
-    :lang(zh) .mono-label,
-    :lang(zh) .edu-time { font-size: .84rem; }
+    /* 日期标签（数字为主）不放大：与英文同尺寸，避免中英文日期视觉大小不一 */
 
     /* ---------------- 动效 ---------------- */
     @keyframes rise {
@@ -688,7 +734,7 @@
   <header class="hero" id="top">
     <div class="wrap hero-grid">
       <div class="hero-identity">
-        <h1 class="name">Zijia&nbsp;<em>Chen</em><span class="name-cn">陈梓佳</span></h1>
+        <h1 class="name"><span class="name-first">Zijia</span>&nbsp;<em>Chen</em><span class="name-cn">陈梓佳</span></h1>
       </div>
 
       <div class="hero-details">
@@ -719,6 +765,15 @@
           <a href="https://scholar.google.com/citations?hl=en&amp;user=LcJ1DtAAAAAJ" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
             <span data-zh="谷歌学术主页">Google Scholar</span>
+          </a>
+          <a href="https://orcid.org/0009-0003-0402-5037" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><text x="12" y="15.8" font-size="9.5" font-weight="bold" fill="currentColor" text-anchor="middle" font-family="Arial, sans-serif">iD</text></svg>
+            <span>ORCID</span>
+          </a>
+          <!-- ✏️ CV 下载：把你的 CV 文件命名为 cv.pdf 放在本页面同目录（上传仓库时一并上传） -->
+          <a href="cv.pdf" download="Zijia_Chen_CV.pdf">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span data-zh="CV 下载">CV</span>
           </a>
         </div>
       </div>
@@ -837,11 +892,15 @@
       <ul class="plain">
         <li>
           <span class="mono-label" data-zh="2026 秋">Fall 2026</span>
-          <span data-zh="《数智前沿讲座(1)》助教">Teaching Assistant, <em>Frontier Lectures in Data Science and Artificial Intelligence (I)</em></span>
+          <span data-zh="助教，《数智前沿讲座(1)》">Teaching Assistant, <em>Frontier Lectures in Data Science and Artificial Intelligence (I)</em></span>
         </li>
         <li>
           <span class="mono-label" data-zh="2025 – 至今">2025 &ndash; Present</span>
-          <span data-zh="清华大学经济管理学院“数据科学与人工智能荣誉班”辅导员">Assistant Class Advisor, <em>Data Science and Artificial Intelligence Honor Program</em>, School of Economics and Management, Tsinghua University</span>
+          <span data-zh="辅导员，清华大学经济管理学院 数据科学与人工智能荣誉班">Assistant Class Advisor, <em>Data Science and Artificial Intelligence Honor Program</em>, School of Economics and Management, Tsinghua University</span>
+        </li>
+        <li>
+          <span class="mono-label" data-zh="2025 – 至今">2025 &ndash; Present</span>
+          <span data-zh="辅导员，清华大学经济管理学院 经51班">Assistant Class Advisor, <em>Class Jing-51 (Information Management and Information Systems)</em>, School of Economics and Management, Tsinghua University</span>
         </li>
       </ul>
     </section>
@@ -965,8 +1024,7 @@
       }
       var navEl = document.querySelector('.site-nav');
       if (navEl) navEl.classList.add('has-egg');   // 彩蛋激活标记：窄屏下菜单链接让位
-      var icon = document.querySelector('link[rel="icon"]');
-      if (icon) icon.href = 'data:image/svg+xml,' + encodeURIComponent(fest.svg);
+      // favicon 全年保持紫底 ZC，不随节日变化（保持统一）
     })();
 
     // ---------- 中英文切换 ----------
